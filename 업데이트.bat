@@ -90,6 +90,10 @@ foreach ($need in @('부스시작.bat', 'runtime\node.exe', 'backend\server.js',
   if (-not (Test-Path (Join-Path $new $need))) { Remove-Item $new -Recurse -Force; Fail "묶음이 온전하지 않습니다($need 없음). 다시 실행하세요." }
 }
 
+# 이 노트북에서 사용자가 만든 wifi.txt(Wi-Fi QR 용 이름·비밀번호)는 새 묶음으로 옮겨 준다 — 안 그러면 업데이트할 때마다 사라진다
+$keepWifi = Join-Path $Dir 'wifi.txt'
+if (Test-Path -LiteralPath $keepWifi) { Copy-Item -LiteralPath $keepWifi -Destination (Join-Path $new 'wifi.txt') -Force; Say '  wifi.txt 를 새 버전으로 옮겼습니다.' }
+
 # 5) 바꿔치기 — 돌고 있는 부스 서버가 있으면 먼저 끈다(파일을 잡고 있어 이름을 못 바꾼다)
 Say ''
 Say '5/5 교체 중...'
